@@ -15,13 +15,15 @@ This module creates a comprehensive set of metric alerts for Azure App Services 
 
 ## Monitored Metrics
 
-| Metric | Description | Standard Warn | Standard Crit | Critical Warn | Critical Crit |
-|--------|-------------|---------------|---------------|---------------|---------------|
-| CPU % | CPU utilization | > 80% | > 95% | > 70% | > 90% |
-| Memory % | Memory utilization | > 80% | > 95% | > 70% | > 90% |
-| HTTP 5xx | Server error count | > 10 | > 50 | > 5 | > 25 |
-| Response Time | Avg response time (ms) | > 2000 | > 5000 | > 1000 | > 3000 |
-| Health Check | Health status | - | < 1 | - | < 1 |
+| Metric | Description | Standard Warn | Standard Crit | Critical Warn | Critical Crit | Default |
+|--------|-------------|---------------|---------------|---------------|---------------|---------|
+| HTTP 5xx | Server error count | > 10 | > 50 | > 5 | > 25 | Enabled |
+| Response Time | Avg response time (ms) | > 2000 | > 5000 | > 1000 | > 3000 | Enabled |
+| Health Check | Health status | - | < 1 | - | < 1 | Enabled |
+| CPU Time | CPU time (seconds)* | > 300 | > 600 | > 200 | > 400 | Disabled |
+| Memory | Working set (bytes)* | > 1GB | > 1.5GB | > 512MB | > 1GB | Disabled |
+
+*CPU and Memory metrics at the app level use CpuTime and AverageMemoryWorkingSet. For percentage-based monitoring, use App Service Plan level metrics. These are disabled by default as thresholds are workload-dependent.
 
 ## Inputs
 

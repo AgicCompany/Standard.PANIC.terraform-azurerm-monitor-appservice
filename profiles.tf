@@ -1,15 +1,20 @@
 locals {
   # Profile definitions based on implementation guide
+  # Note: CPU/Memory % metrics are at App Service Plan level, not app level
+  # CpuTime (seconds) and AverageMemoryWorkingSet (bytes) are app-level but
+  # thresholds are workload-dependent. Disabled by default.
   profiles = {
     standard = {
       cpu = {
-        warning_threshold  = 80
-        critical_threshold = 95
+        enabled            = false  # Requires plan-level monitoring
+        warning_threshold  = 300    # CpuTime in seconds
+        critical_threshold = 600
         window_minutes     = 5
       }
       memory = {
-        warning_threshold  = 80
-        critical_threshold = 95
+        enabled            = false  # Requires plan-level monitoring
+        warning_threshold  = 1073741824   # 1GB in bytes
+        critical_threshold = 1610612736   # 1.5GB in bytes
         window_minutes     = 5
       }
       http_5xx = {
@@ -24,18 +29,20 @@ locals {
       }
       health_check = {
         critical_threshold = 1
-        window_minutes     = 1
+        window_minutes     = 5  # Minimum required by Azure
       }
     }
     critical = {
       cpu = {
-        warning_threshold  = 70
-        critical_threshold = 90
+        enabled            = false  # Requires plan-level monitoring
+        warning_threshold  = 200
+        critical_threshold = 400
         window_minutes     = 5
       }
       memory = {
-        warning_threshold  = 70
-        critical_threshold = 90
+        enabled            = false  # Requires plan-level monitoring
+        warning_threshold  = 536870912    # 512MB in bytes
+        critical_threshold = 1073741824   # 1GB in bytes
         window_minutes     = 5
       }
       http_5xx = {
@@ -50,7 +57,7 @@ locals {
       }
       health_check = {
         critical_threshold = 1
-        window_minutes     = 1
+        window_minutes     = 5  # Minimum required by Azure
       }
     }
   }

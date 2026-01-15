@@ -231,6 +231,7 @@ resource "azurerm_monitor_metric_alert" "response_time_crit" {
 }
 
 # Health Check - Critical Alert (no warning level for availability)
+# Note: HealthCheckStatus requires minimum PT5M window
 resource "azurerm_monitor_metric_alert" "health_check_crit" {
   count = local.resolved.health_check.enabled && var.enabled ? 1 : 0
 
@@ -242,7 +243,7 @@ resource "azurerm_monitor_metric_alert" "health_check_crit" {
   enabled             = var.enabled
   auto_mitigate       = local.defaults.auto_mitigate
   frequency           = "PT${local.defaults.frequency_minutes}M"
-  window_size         = "PT${local.resolved.health_check.window_minutes}M"
+  window_size         = "PT5M"  # Minimum required by Azure for HealthCheckStatus
 
   criteria {
     metric_namespace = local.metrics.health_check.namespace

@@ -8,20 +8,22 @@ locals {
   }
 
   # Metric definitions for App Service
+  # Note: CpuPercentage/MemoryPercentage are at App Service Plan level
+  # For individual apps, use CpuTime and MemoryWorkingSet
   metrics = {
     cpu = {
       namespace   = "Microsoft.Web/sites"
-      name        = "CpuPercentage"
-      aggregation = "Average"
+      name        = "CpuTime"
+      aggregation = "Total"
       operator    = "GreaterThan"
-      description = "App Service CPU percentage"
+      description = "App Service CPU time in seconds"
     }
     memory = {
       namespace   = "Microsoft.Web/sites"
-      name        = "MemoryPercentage"
+      name        = "AverageMemoryWorkingSet"
       aggregation = "Average"
       operator    = "GreaterThan"
-      description = "App Service memory percentage"
+      description = "App Service average memory working set in bytes"
     }
     http_5xx = {
       namespace   = "Microsoft.Web/sites"
@@ -49,13 +51,13 @@ locals {
   # Resolve final values: override -> profile -> defaults
   resolved = {
     cpu = {
-      enabled            = try(var.overrides.cpu.enabled, true)
+      enabled            = try(var.overrides.cpu.enabled, try(local.active_profile.cpu.enabled, false))
       warning_threshold  = try(var.overrides.cpu.warning_threshold, local.active_profile.cpu.warning_threshold)
       critical_threshold = try(var.overrides.cpu.critical_threshold, local.active_profile.cpu.critical_threshold)
       window_minutes     = try(var.overrides.cpu.window_minutes, local.active_profile.cpu.window_minutes)
     }
     memory = {
-      enabled            = try(var.overrides.memory.enabled, true)
+      enabled            = try(var.overrides.memory.enabled, try(local.active_profile.memory.enabled, false))
       warning_threshold  = try(var.overrides.memory.warning_threshold, local.active_profile.memory.warning_threshold)
       critical_threshold = try(var.overrides.memory.critical_threshold, local.active_profile.memory.critical_threshold)
       window_minutes     = try(var.overrides.memory.window_minutes, local.active_profile.memory.window_minutes)
