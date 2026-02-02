@@ -53,7 +53,7 @@ This module creates a comprehensive set of metric alerts for Azure App Services 
 
 ```hcl
 module "appservice_alerts" {
-  source = "git::https://github.com/yourorg/terraform-azurerm-monitor-appservice.git?ref=v1.0.0"
+  source = "git::https://github.com/AgicCompany/Standard.PANIC.terraform-azurerm-monitor-appservice.git?ref=v1.0.0"
 
   resource_id         = azurerm_linux_web_app.example.id
   resource_name       = "dev-webapp-01"
@@ -71,7 +71,7 @@ module "appservice_alerts" {
 
 ```hcl
 module "appservice_alerts" {
-  source = "git::https://github.com/yourorg/terraform-azurerm-monitor-appservice.git?ref=v1.0.0"
+  source = "git::https://github.com/AgicCompany/Standard.PANIC.terraform-azurerm-monitor-appservice.git?ref=v1.0.0"
 
   resource_id         = azurerm_linux_web_app.production.id
   resource_name       = "prod-api"
